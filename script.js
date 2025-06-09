@@ -1,8 +1,9 @@
 class DICloakAPI {
     constructor() {
-        this.baseUrl = 'http://127.0.0.1:52140/openapi';
+        // Actualizado para usar tu IP local
+        this.baseUrl = 'http://192.168.18.1:52140/openapi'; 
         this.apiKey = '';
-        this.teamId = null;
+        this.teamId = null; 
     }
 
     setApiKey(apiKey) {
