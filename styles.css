@@ -1,0 +1,749 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased; /* Smoother fonts on macOS/iOS */
+    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox/macOS */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", Arial, sans-serif; /* Apple-like font stack */
+    background: #f5f5f7; /* Apple's light gray background */
+    color: #1d1d1f; /* Apple's primary text color */
+    min-height: 100vh;
+    line-height: 1.5; /* Adjusted line height for readability */
+    font-size: 16px; /* Base font size */
+}
+
+.container {
+    max-width: 1200px; /* Slightly narrower for a more focused feel */
+    margin: 0 auto;
+    padding: 30px 20px; /* Consistent padding */
+}
+
+header {
+    background: #ffffff;
+    color: #1d1d1f;
+    padding: 30px 35px; /* Generous padding */
+    border-radius: 18px; /* More pronounced rounding */
+    margin-bottom: 40px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.08); /* Softer, layered shadow */
+    border: 1px solid rgba(0,0,0,0.08); /* Very subtle border */
+}
+
+header h1 {
+    margin-bottom: 8px;
+    color: #1d1d1f;
+    font-size: 2.25rem; /* Slightly reduced for balance */
+    font-weight: 600; /* Apple uses semi-bold for titles */
+    letter-spacing: -0.01em;
+}
+
+header p {
+    font-size: 1.05rem;
+    color: #6e6e73; /* Apple's secondary text color */
+    font-weight: 400;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+nav a {
+    color: #007aff; /* Apple's primary blue */
+    text-decoration: none;
+    padding: 9px 16px; /* Adjusted padding */
+    border-radius: 10px; /* Consistent rounding */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    background: rgba(0, 122, 255, 0.08); /* Very light blue background */
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+nav a:hover, nav a.active {
+    background: #007aff;
+    color: white;
+}
+
+.config-section,
+.form-section,
+.environments-list,
+.members-list,
+.testing-section {
+    background: #ffffff;
+    padding: 30px 35px; /* Consistent padding */
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 4px 8px rgba(0,0,0,0.06); /* Softer shadow */
+    margin-bottom: 40px;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.config-section h2,
+.form-section h2,
+.environments-list h2,
+.members-list h2,
+.testing-section h2 {
+    font-size: 1.6rem; /* Adjusted size */
+    color: #1d1d1f;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.api-config {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px; /* Increased gap */
+    align-items: end;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 500; /* Medium weight for labels */
+    color: #333333; /* Slightly darker for emphasis */
+    font-size: 0.9rem;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 11px 15px; /* Adjusted padding */
+    border: 1px solid #d2d2d7; /* Apple's input border color */
+    border-radius: 10px; /* Consistent rounding */
+    font-size: 1rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background: #fcfcfc; /* Slightly off-white */
+    color: #1d1d1f;
+}
+input[type="text"]::placeholder,
+input[type="password"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="number"]::placeholder,
+textarea::placeholder {
+    color: #86868b; /* Apple's placeholder color */
+}
+
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #007aff;
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25); /* Focus ring like Apple's */
+}
+
+.proxy-config, .member-type-info, .instructions-panel { /* Grouped similar panel styles */
+    background: rgba(0,0,0,0.03); /* Very light gray */
+    padding: 18px 22px;
+    border-radius: 12px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.9rem;
+}
+
+.proxy-config h4, .member-type-info h4, .instructions-panel h4 {
+    margin: 0 0 10px 0;
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+.proxy-config ul, .member-type-info ul, .instructions-panel ol {
+    margin: 0;
+    padding-left: 20px;
+    color: #3c3c3e;
+}
+.proxy-config li, .member-type-info li, .instructions-panel li {
+    margin-bottom: 6px;
+}
+
+
+.form-group small {
+    display: block;
+    margin-top: 7px;
+    color: #6e6e73;
+    font-size: 0.8rem;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-edit,
+.btn-delete,
+.btn-activate,
+.btn-open,
+.btn-close {
+    padding: 10px 18px; /* Standardized padding */
+    border: none;
+    border-radius: 8px; /* Consistent rounding */
+    cursor: pointer;
+    font-size: 0.95rem; /* Slightly adjusted font size */
+    font-weight: 500; /* Medium weight */
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    text-align: center;
+    display: inline-flex; /* For aligning icon and text if any */
+    align-items: center;
+    justify-content: center;
+    gap: 8px; /* Space between icon and text */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.btn-primary {
+    background-color: #007aff; /* Apple blue */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #0071e3; /* Slightly darker blue */
+}
+.btn-primary:active {
+    transform: scale(0.98);
+    background-color: #0068cc;
+}
+
+
+.btn-secondary {
+    background-color: #e5e5ea; /* Apple's light gray button */
+    color: #1d1d1f; /* Dark text */
+}
+
+.btn-secondary:hover {
+    background-color: #dcdce0;
+}
+.btn-secondary:active {
+    background-color: #d0d0d5; /* Darker gray for active */
+    transform: translateY(1px);
+}
+
+
+.btn-open {
+    background-color: rgba(52, 199, 89, 0.15); /* Apple green background */
+    color: #34c759; /* Apple green text */
+    border: 1px solid rgba(52, 199, 89, 0.3);
+}
+.btn-open:hover {
+    background-color: rgba(52, 199, 89, 0.25);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.btn-close {
+    background-color: rgba(255, 149, 0, 0.15); /* Apple orange background */
+    color: #ff9500; /* Apple orange text */
+    border: 1px solid rgba(255, 149, 0, 0.3);
+}
+.btn-close:hover {
+    background-color: rgba(255, 149, 0, 0.25);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.btn-edit {
+    background-color: rgba(0, 122, 255, 0.12); /* Lighter Apple blue background */
+    color: #007aff; /* Apple blue text */
+    border: 1px solid rgba(0, 122, 255, 0.25);
+}
+.btn-edit:hover {
+    background-color: rgba(0, 122, 255, 0.22);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.btn-delete {
+    background-color: rgba(255, 59, 48, 0.12); /* Lighter Apple red background */
+    color: #ff3b30; /* Apple red text */
+    border: 1px solid rgba(255, 59, 48, 0.25);
+}
+.btn-delete:hover {
+    background-color: rgba(255, 59, 48, 0.22); /* Darker red on hover */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.btn-activate {
+    background-color: #34c759; /* Apple green */
+    color: white;
+    padding: 7px 14px;
+}
+.btn-activate:hover {
+    background-color: #30b551;
+}
+
+
+.controls {
+    margin-bottom: 30px; /* Increased spacing */
+    display: flex;
+    gap: 12px; /* Reduced gap for tighter control group */
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.controls input[type="text"], .controls select {
+    min-width: 180px; /* Adjusted width */
+    background-color: #fff; /* Ensure controls have white background */
+}
+
+
+.environment-card,
+.member-card {
+    border: 1px solid rgba(0,0,0,0.1); /* Subtle border */
+    padding: 25px 30px;
+    margin-bottom: 20px;
+    border-radius: 16px; /* More rounding */
+    background: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.environment-card:hover,
+.member-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04), 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.environment-card h3,
+.member-card h3 {
+    color: #1d1d1f;
+    margin-bottom: 15px;
+    font-size: 1.25rem; /* Adjusted size */
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-weight: 500; /* Medium weight for card titles */
+}
+
+.environment-info,
+.member-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px 18px; /* Row and column gap */
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #3c3c3e;
+}
+.member-info strong {
+    color: #1d1d1f;
+    font-weight: 500;
+    margin-right: 4px;
+}
+
+
+.environment-actions,
+.member-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.status-running {
+    background: #34c759; /* Apple green */
+}
+
+.status-stopped {
+    background: #ff3b30; /* Apple red */
+}
+
+.member-status, .member-type { /* Combined similar badge styles */
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px; /* Pill shape */
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+}
+
+.status-enabled {
+    background-color: rgba(52, 199, 89, 0.15); /* Light green */
+    color: #34c759; /* Apple green */
+    border-color: rgba(52, 199, 89, 0.3);
+}
+
+.status-disabled {
+    background-color: rgba(255, 59, 48, 0.15); /* Light red */
+    color: #ff3b30; /* Apple red */
+    border-color: rgba(255, 59, 48, 0.3);
+}
+
+.group-badge { /* General group badge style */
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background-color: rgba(0,0,0,0.05);
+    color: #3c3c3e;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+/* Specific group roles can override if needed, but a generic one is often cleaner */
+.group-admin { background-color: rgba(88, 86, 214, 0.15); color: #5856d6; border-color: rgba(88, 86, 214, 0.3); } /* Apple purple */
+.group-manager { background-color: rgba(0, 122, 255, 0.15); color: #007aff; border-color: rgba(0, 122, 255, 0.3); } /* Apple blue */
+.group-member { background-color: rgba(142, 142, 147, 0.15); color: #8e8e93; border-color: rgba(142, 142, 147, 0.3); } /* Apple gray */
+
+
+.type-internal {
+    background-color: rgba(0, 122, 255, 0.15); /* Light blue */
+    color: #007aff; /* Apple blue */
+    border-color: rgba(0, 122, 255, 0.3);
+}
+
+.type-external {
+    background-color: rgba(255, 149, 0, 0.15); /* Light orange */
+    color: #ff9500; /* Apple orange */
+    border-color: rgba(255, 149, 0, 0.3);
+}
+
+.permissions-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+.permission-tag {
+    background: rgba(142, 142, 147, 0.12); /* Apple's light gray for tags */
+    color: #3c3c3e;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(142, 142, 147, 0.2);
+}
+
+.testing-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.test-configuration {
+    background: rgba(0,0,0,0.02); /* Very subtle background */
+    padding: 20px 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.test-configuration h3 {
+    margin-bottom: 12px;
+    color: #1d1d1f;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.test-results {
+    margin-top: 25px;
+}
+
+.test-summary {
+    background: #f5f5f7; /* Body background color for subtle panel */
+    padding: 18px 22px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(0,0,0,0.08);
+}
+
+.test-summary h3 {
+    margin-bottom: 10px;
+    color: #1d1d1f;
+    font-weight: 500;
+}
+
+.test-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.test-result {
+    padding: 15px 20px;
+    border-radius: 12px;
+    border-left-width: 0; /* Remove left border, use background instead */
+    border: 1px solid transparent;
+}
+
+.test-passed {
+    background: rgba(52, 199, 89, 0.1); /* Lighter green */
+    border-color: rgba(52, 199, 89, 0.2);
+}
+
+.test-failed {
+    background: rgba(255, 59, 48, 0.1); /* Lighter red */
+    border-color: rgba(255, 59, 48, 0.2);
+}
+
+.test-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.test-icon {
+    font-size: 1.1rem;
+}
+
+.test-name {
+    font-weight: 500;
+    color: #1d1d1f;
+    flex: 1;
+}
+
+.test-time {
+    font-size: 0.8rem;
+    color: #6e6e73;
+}
+
+.test-message {
+    color: #3c3c3e;
+    font-size: 0.85rem;
+}
+
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6e6e73;
+    font-size: 1.1rem;
+}
+
+.loading-tests {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6e6e73;
+}
+
+.loading-tests::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(0,0,0,0.1);
+    border-top: 2px solid #6e6e73; /* Gray spinner */
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error, .success, .message {
+    padding: 14px 18px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    font-weight: 400; /* Regular weight for messages */
+    border: 1px solid transparent;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.error, .message.error {
+    background: #ffebeb; /* Softer red */
+    color: #d92c2c;
+    border-color: #ffc2c2;
+}
+
+.success, .message.success {
+    background: #e6ffed; /* Softer green */
+    color: #248549;
+    border-color: #b8f5c9;
+}
+
+.message.info {
+    background: #e5f3ff; /* Softer blue */
+    color: #005db3;
+    border-color: #b8dfff;
+}
+
+#password-group {
+    transition: opacity 0.25s ease, max-height 0.25s ease;
+    overflow: hidden;
+}
+
+.error-message {
+    display: none;
+    color: #ff3b30; /* Apple red for errors */
+    font-size: 0.8rem;
+    margin-top: 5px;
+    padding: 6px 0; /* No background, just text */
+}
+
+.form-group input:invalid:not(:placeholder-shown),
+.form-group select:invalid:not(:placeholder-shown),
+.form-group textarea:invalid:not(:placeholder-shown) {
+    border-color: #ff3b30; /* Apple red border for invalid */
+    box-shadow: 0 0 0 3px rgba(255, 59, 48, 0.2);
+}
+.form-group input:invalid:not(:placeholder-shown) ~ .error-message, /* Use general sibling combinator */
+.form-group select:invalid:not(:placeholder-shown) ~ .error-message,
+.form-group textarea:invalid:not(:placeholder-shown) ~ .error-message {
+    display: block;
+}
+
+
+.form-group input:valid:not(:placeholder-shown),
+.form-group select:valid:not(:placeholder-shown),
+.form-group textarea:valid:not(:placeholder-shown) {
+    border-color: #34c759; /* Apple green border for valid */
+}
+
+
+.btn-loading {
+    display: none;
+}
+.btn-loading::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255,255,255,0.6);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-right: 8px;
+    vertical-align: -2px; /* Align spinner better with text */
+}
+.btn-secondary .btn-loading::before { /* Spinner for secondary buttons */
+    border: 2px solid rgba(0,0,0,0.3);
+    border-top-color: #1d1d1f;
+}
+
+
+button:disabled {
+    opacity: 0.5; /* More subtle disabled state */
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+@media (max-width: 1024px) {
+    .container {
+        padding: 25px 15px;
+    }
+    header h1 { font-size: 2rem; }
+    .config-section h2, .form-section h2, .environments-list h2, .members-list h2, .testing-section h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    body { font-size: 15px; }
+    .container { padding: 20px 10px; }
+    
+    .environment-info, .member-info {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .environment-actions, .member-actions, .testing-controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .api-config {
+        grid-template-columns: 1fr;
+    }
+    
+    nav ul { flex-direction: column; gap: 8px; }
+    nav a { display: block; text-align: left; } /* Align left for better readability */
+    
+    form div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 0 !important;
+    }
+    form div[style*="grid-template-columns"] > .form-group {
+        margin-bottom: 18px;
+    }
+
+    .btn-primary, .btn-secondary {
+        width: 100%;
+        padding: 12px 20px; /* Slightly larger touch targets */
+    }
+
+    /* Stack form fields in sections like "Crear Miembro" and "Editar Miembro" */
+    .form-section form fieldset > div[style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important; /* Force one column */
+    }
+
+    /* Adjust button layouts if needed */
+    .form-section form fieldset > div[style*="display: flex; gap: 15px;"] {
+        flex-direction: column;
+    }
+
+    .form-section form fieldset > div[style*="display: flex; gap: 15px;"] button {
+        width: 100%; /* Make buttons full width */
+    }
+
+    /* Adjust controls in members list */
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .controls input[type="text"],
+    .controls select {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Reduce padding or margins if elements feel too cramped */
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    /* Ensure input fields and buttons are easily tappable */
+    input[type="text"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="email"], /* Added email for consistency */
+    select,
+    textarea,
+    button {
+        font-size: 16px; /* Prevents iOS zoom on focus */
+        padding: 12px 10px; /* Increase tap area */
+    }
+
+    .btn-primary, .btn-secondary {
+        padding: 12px 15px;
+    }
+}
+
+:focus-visible { /* Standard focus style */
+    outline: 2px solid #007aff;
+    outline-offset: 2px;
+    box-shadow: none; /* Remove custom shadow if :focus-visible is supported */
+}

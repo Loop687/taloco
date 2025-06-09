@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DICloak - Gestión Simple</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add favicon for better UX -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔐</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 DICloak - Gestión Simple</h1>
+            <p>Herramienta web para gestionar miembros de DICloak</p>
+        </header>
+        
+        <div id="message" class="message" style="display: none;"></div>
+
+        <!-- Configuración API -->
+        <div class="config-section">
+            <h2>🔧 Configuración API</h2>
+            <div class="api-config">
+                <div class="form-group">
+                    <label for="api-key">API Key:</label>
+                    <div style="position: relative;">
+                        <input type="password" id="api-key" placeholder="Ingresa tu API Key" 
+                               autocomplete="new-password" 
+                               aria-describedby="api-key-help">
+                        <button type="button" id="toggle-api-key" 
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer;"
+                                aria-label="Mostrar/Ocultar API Key">👁️</button>
+                    </div>
+                    <small id="api-key-help" style="color: #666; font-size: 0.9em;">
+                        Tu API Key se almacena solo en tu navegador y no se envía a terceros
+                    </small>
+                </div>
+                <button id="test-connection" class="btn-primary">Probar Conexión</button>
+                <button id="test-api-responses" class="btn-secondary">✅ Verificar API</button>
+                <button id="repair-groups" class="btn-secondary">🔧 Reparar Grupos</button>
+                <button id="advanced-diagnostic" class="btn-secondary">🔍 Diagnóstico Avanzado</button>
+            </div>
+            
+            <!-- Status de conexión -->
+            <div id="connection-status" style="margin-top: 15px; padding: 10px; border-radius: 6px; display: none;">
+                <div id="status-content"></div>
+            </div>
+        </div>
+
+        <!-- Nueva Sección de Pruebas Específicas -->
+        <div class="testing-section">
+            <h2>🧪 Pruebas Específicas de Edición</h2>
+            
+            <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                <h4 style="margin: 0 0 10px 0; color: #856404;">🎯 Prueba con Usuario Específico</h4>
+                <p style="margin: 0; color: #856404;">
+                    Selecciona un usuario específico para probar la funcionalidad de edición paso a paso.
+                </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 15px; margin-bottom: 20px; align-items: end;">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label for="test-user-id">ID del Usuario para Probar:</label>
+                    <input type="text" id="test-user-id" placeholder="Ej: 1931436798302367746">
+                </div>
+                <button id="load-test-user" class="btn-secondary">📋 Cargar Usuario</button>
+                <button id="execute-edit-test" class="btn-primary">🚀 Probar Edición</button>
+            </div>
+            
+            <div id="test-user-info" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                <h4 style="margin: 0 0 15px 0; color: #2c3e50;">👤 Información del Usuario de Prueba</h4>
+                <div id="test-user-details"></div>
+            </div>
+            
+            <div id="detailed-test-results" style="display: none;">
+                <h4 style="margin: 0 0 15px 0; color: #2c3e50;">📊 Resultados Detallados de la Prueba</h4>
+                <div id="test-steps"></div>
+            </div>
+        </div>
+
+        <!-- Lista de Miembros -->
+        <div class="members-list">
+            <h2>📋 Lista de Miembros</h2>
+            
+            <!-- Controles y Búsqueda -->
+            <div class="controls">
+                <button id="load-members" class="btn-primary">🔄 Cargar Miembros</button>
+                
+                <input type="text" id="search-members" placeholder="🔍 Buscar por nombre, email, usuario o ID...">
+                
+                <select id="filter-type">
+                    <option value="">🏷️ Todos los tipos</option>
+                    <option value="INTERNAL">👤 Internos</option>
+                    <option value="EXTERNAL">🌐 Externos</option>
+                </select>
+                
+                <select id="filter-status">
+                    <option value="">📊 Todos los estados</option>
+                    <option value="ENABLED">🟢 Activos</option>
+                    <option value="DISABLED">🔴 Inactivos</option>
+                </select>
+            </div>
+
+            <!-- Estadísticas -->
+            <div id="members-stats"></div>
+
+            <!-- Lista de Miembros -->
+            <div id="members-list">
+                <p style="text-align: center; color: #666; padding: 40px;">
+                    <span style="font-size: 2em;">👥</span><br>
+                    Haz clic en "Cargar Miembros" para ver los miembros registrados
+                </p>
+            </div>
+
+            <!-- Paginación -->
+            <div id="pagination"></div>
+        </div>
+
+        <!-- Editar Miembro -->
+        <div class="form-section" id="edit-section">
+            <h2>✏️ Editar Miembro</h2>
+            
+            <!-- Enhanced Instructions with Better Accessibility -->
+            <div class="instructions-panel" 
+                 style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2196f3;"
+                 role="region" 
+                 aria-labelledby="instructions-heading">
+                <h4 id="instructions-heading" style="margin: 0 0 10px 0; color: #1976d2;">🔧 Instrucciones:</h4>
+                <ol style="margin: 0; padding-left: 20px; color: #1976d2;">
+                    <li>Ingresa el <strong>ID del miembro</strong> y haz clic en "Cargar Datos"</li>
+                    <li>Modifica los campos que desees cambiar</li>
+                    <li>Haz clic en "Actualizar Miembro" para guardar los cambios</li>
+                </ol>
+            </div>
+            
+            <!-- Enhanced Member ID Input with Validation -->
+            <div class="form-group">
+                <label for="edit-member-id">ID del Miembro: *</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" 
+                           id="edit-member-id" 
+                           placeholder="Ej: 1931436798302367746" 
+                           required 
+                           style="flex: 1;"
+                           pattern="[0-9]+"
+                           title="Solo se permiten números"
+                           aria-describedby="member-id-error">
+                    <button type="button" id="load-member-data" class="btn-secondary" disabled>🔄 Cargar Datos</button>
+                </div>
+                <div id="member-id-error" class="error-message" style="display: none; color: #d32f2f; font-size: 0.9em; margin-top: 5px;"></div>
+            </div>
+            
+            <!-- Enhanced Form with Better Validation -->
+            <form id="edit-member-form" novalidate>
+                <fieldset disabled id="form-fields">
+                    <legend style="display: none;">Campos del Miembro</legend>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="edit-name">Nombre: *</label>
+                            <input type="text" 
+                                   id="edit-name" 
+                                   name="name" 
+                                   placeholder="Nombre del miembro" 
+                                   required
+                                   minlength="2"
+                                   maxlength="100"
+                                   aria-describedby="name-error">
+                            <div id="name-error" class="error-message" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-authority">Autoridad: *</label>
+                            <select id="edit-authority" name="authority" required aria-describedby="authority-error">
+                                <option value="">Seleccionar autoridad</option>
+                                <option value="ADMIN">👑 ADMIN</option>
+                                <option value="MANAGER">👨‍💼 MANAGER</option>
+                                <option value="MEMBER">👤 MEMBER</option>
+                            </select>
+                            <div id="authority-error" class="error-message" style="display: none;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="edit-member-role">Rol: *</label>
+                            <select id="edit-member-role" name="role_id" required>
+                                <option value="">Seleccionar rol</option>
+                                <!-- Los roles se llenarán dinámicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="edit-status">Estado:</label>
+                            <select id="edit-status" name="status">
+                                <option value="">Mantener estado actual</option>
+                                <option value="ENABLED">🟢 Activo</option>
+                                <option value="DISABLED">🔴 Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Sección de Grupos de Perfil -->
+                    <div class="form-group">
+                        <label>Acceso a Grupos de Perfil:</label>
+                        <div id="edit-env-groups-container">
+                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; color: #666;">
+                                <p>👆 Haz clic en "Cargar Datos" para ver los grupos disponibles</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-remark">Notas:</label>
+                        <textarea id="edit-remark" name="remark" rows="3" placeholder="Notas opcionales sobre el miembro..."></textarea>
+                    </div>
+                    
+                    <!-- Enhanced Action Buttons -->
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="submit" class="btn-primary" style="flex: 1;" disabled id="update-member-btn">
+                            <span class="btn-text">✅ Actualizar Miembro</span>
+                            <span class="btn-loading" style="display: none;">⏳ Actualizando...</span>
+                        </button>
+                        <button type="button" onclick="app.resetEditForm()" class="btn-secondary">🗑️ Limpiar Formulario</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+        <!-- Crear Miembro Interno -->
+        <div class="form-section" id="create-section">
+            <h2>✨ Crear Miembro Interno</h2>
+            
+            <div class="instructions-panel" 
+                 style="background: #e3f2fd; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #2196f3;"
+                 role="region" 
+                 aria-labelledby="create-instructions-heading">
+                <h4 id="create-instructions-heading" style="margin: 0 0 10px 0; color: #1976d2;">📝 Instrucciones:</h4>
+                <ol style="margin: 0; padding-left: 20px; color: #1976d2;">
+                    <li>Completa todos los campos requeridos (*)</li>
+                    <li>El tipo de miembro se establecerá automáticamente como "INTERNO"</li>
+                    <li>Haz clic en "Crear Miembro" para guardar</li>
+                </ol>
+            </div>
+
+            <form id="create-member-form" novalidate>
+                <fieldset id="create-form-fields">
+                    <legend style="display: none;">Campos del Nuevo Miembro</legend>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="create-name">Nombre: *</label>
+                            <input type="text" id="create-name" name="name" placeholder="Nombre completo" required minlength="2" maxlength="100" aria-describedby="create-name-error">
+                            <div id="create-name-error" class="error-message" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="create-email">Email: *</label>
+                            <input type="text" id="create-email" name="email" placeholder="correo@ejemplo.com o nombre de usuario" required aria-describedby="create-email-error">
+                            <div id="create-email-error" class="error-message" style="display: none;"></div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="create-phone">Teléfono:</label>
+                            <input type="tel" id="create-phone" name="phone" placeholder="Ej: +1234567890">
+                        </div>
+                        <div class="form-group">
+                            <label for="create-passwd">Contraseña: *</label>
+                            <input type="password" id="create-passwd" name="passwd" placeholder="Mínimo 8 caracteres" required minlength="8" aria-describedby="create-passwd-error">
+                            <div id="create-passwd-error" class="error-message" style="display: none;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="create-authority">Autoridad: *</label>
+                            <select id="create-authority" name="authority" required aria-describedby="create-authority-error">
+                                <option value="">Seleccionar autoridad</option>
+                                <option value="ADMIN">👑 ADMIN</option>
+                                <option value="MANAGER">👨‍💼 MANAGER</option>
+                                <option value="MEMBER">👤 MEMBER</option>
+                                <!-- Consider adding SUPER_ADMIN if API requires it for creation -->
+                            </select>
+                            <div id="create-authority-error" class="error-message" style="display: none;"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="create-member-role">Rol: *</label>
+                            <select id="create-member-role" name="role_id" required>
+                                <option value="">Seleccionar rol</option>
+                                <!-- Los roles se llenarán dinámicamente -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="create-status">Estado:</label>
+                            <select id="create-status" name="status">
+                                <option value="ENABLED">🟢 Activo (Por defecto)</option>
+                                <option value="DISABLED">🔴 Inactivo</option>
+                            </select>
+                        </div>
+                         <div class="form-group">
+                            <label for="create-remark">Notas:</label>
+                            <textarea id="create-remark" name="remark" rows="1" placeholder="Notas opcionales..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección de Grupos de Perfil para Crear -->
+                    <div class="form-group">
+                        <label>Acceso a Grupos de Perfil:</label>
+                        <div id="create-env-groups-container">
+                            <!-- Contenido se cargará dinámicamente -->
+                             <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: center; color: #666;">
+                                <p>Los grupos de perfil se cargarán aquí.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                        <div class="form-group">
+                            <label for="create-manager-id">ID del Manager (Opcional):</label>
+                            <input type="text" id="create-manager-id" name="manager_id" placeholder="ID numérico del manager">
+                        </div>
+                        <div class="form-group">
+                            <label for="create-agent-id">ID del Agente (Opcional):</label>
+                            <input type="text" id="create-agent-id" name="agent_id" placeholder="ID numérico del agente">
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; margin-top: 30px;">
+                        <button type="submit" class="btn-primary" style="flex: 1;" id="create-member-btn">
+                            <span class="btn-text">➕ Crear Miembro</span>
+                            <span class="btn-loading" style="display: none;">⏳ Creando...</span>
+                        </button>
+                        <button type="button" onclick="app.resetCreateForm()" class="btn-secondary">🗑️ Limpiar Formulario</button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Enhanced Error Handler with Better UX -->
+    <script>
+        // Enhanced error handling with user-friendly messages
+        const errorMessages = {
+            'NetworkError': 'Error de conexión. Verifica tu conexión a internet.',
+            'TypeError': 'Error de tipo de datos. Verifica la información ingresada.',
+            'SyntaxError': 'Error en el formato de datos recibidos.',
+            'ReferenceError': 'Error interno de la aplicación.'
+        };
+
+        function showUserFriendlyError(error) {
+            const messageElement = document.getElementById('message');
+            if (!messageElement) return;
+            
+            const friendlyMessage = errorMessages[error.name] || error.message || 'Error desconocido';
+            messageElement.textContent = `❌ ${friendlyMessage}`;
+            messageElement.className = 'message error';
+            messageElement.style.display = 'block';
+            
+            // Auto-hide error after 5 seconds
+            setTimeout(() => {
+                if (messageElement.classList.contains('error')) {
+                    messageElement.style.display = 'none';
+                }
+            }, 5000);
+        }
+
+        window.addEventListener('error', function(event) {
+            console.error('❌ Error global capturado:', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                colno: event.colno,
+                error: event.error
+            });
+            
+            showUserFriendlyError(event.error || { message: event.message });
+        });
+
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('❌ Promise rechazada no manejada:', event.reason);
+            showUserFriendlyError(event.reason || { message: 'Error de conexión' });
+        });
+
+        // Input validation for member ID
+        document.addEventListener('DOMContentLoaded', function() {
+            const memberIdInput = document.getElementById('edit-member-id');
+            const loadDataBtn = document.getElementById('load-member-data');
+            
+            if (memberIdInput && loadDataBtn) {
+                memberIdInput.addEventListener('input', function() {
+                    const isValid = this.value.trim().length > 0 && /^\d+$/.test(this.value.trim());
+                    loadDataBtn.disabled = !isValid;
+                    
+                    const errorDiv = document.getElementById('member-id-error');
+                    if (this.value.trim() && !isValid) {
+                        errorDiv.textContent = 'El ID debe contener solo números';
+                        errorDiv.style.display = 'block';
+                    } else {
+                        errorDiv.style.display = 'none';
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
